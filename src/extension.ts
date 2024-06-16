@@ -30,13 +30,18 @@ export async function activate(context: ExtensionContext): Promise<void> {
   );
 
   const showPretty = async (options?: TextDocumentShowOptions) => {
-    const actualUri = window.activeTextEditor?.document.uri;
+    const uri = window.activeTextEditor?.document.uri;
 
-    if (!actualUri) {
+    if (!uri) {
       return;
     }
 
-    const providerUri = PrettyAnsiContentProvider.toProviderUri(actualUri);
+    let providerUri;
+    if (PrettyAnsiContentProvider.isProviderUri(uri)) {
+      providerUri = PrettyAnsiContentProvider.toActualUri(uri);
+    } else {
+      providerUri = PrettyAnsiContentProvider.toProviderUri(uri);
+    }
 
     await window.showTextDocument(providerUri, options);
   };

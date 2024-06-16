@@ -27,6 +27,10 @@ export class PrettyAnsiContentProvider implements TextDocumentContentProvider {
     return Uri.parse(providerUri.query, true);
   }
 
+  public static isProviderUri(uri: Uri): boolean {
+    return uri.scheme === PrettyAnsiContentProvider.scheme;
+  }
+
   private readonly _onDidChange = new EventEmitter<Uri>();
   public readonly onDidChange = this._onDidChange.event;
 
